@@ -42,7 +42,49 @@ pub type tcflag_t = u32;
 pub type time_t = ::c_longlong;
 pub type id_t = ::c_uint;
 
-s! {
+#[cfg_attr(feature = "extra_traits", derive(Debug))]
+pub enum timezone {}
+impl ::Copy for timezone {}
+impl ::Clone for timezone {
+    fn clone(&self) -> timezone {
+        *self
+    }
+}
+
+s_no_extra_traits! {
+    #[repr(C)]
+    pub struct utsname {
+        pub sysname: [::c_char; UTSLENGTH],
+        pub nodename: [::c_char; UTSLENGTH],
+        pub release: [::c_char; UTSLENGTH],
+        pub version: [::c_char; UTSLENGTH],
+        pub machine: [::c_char; UTSLENGTH],
+        pub domainname: [::c_char; UTSLENGTH],
+    }
+
+    pub struct dirent {
+        pub d_ino: ::ino_t,
+        pub d_off: ::off_t,
+        pub d_reclen: ::c_ushort,
+        pub d_type: ::c_uchar,
+        pub d_name: [::c_char; 256],
+    }
+
+    pub struct sockaddr_un {
+        pub sun_family: ::sa_family_t,
+        pub sun_path: [::c_char; 108]
+    }
+
+    pub struct sockaddr_storage {
+        pub ss_family: ::sa_family_t,
+        __ss_padding: [
+            u8;
+            128 -
+            ::core::mem::size_of::<sa_family_t>() -
+            ::core::mem::size_of::<c_ulong>()
+        ],
+        __ss_align: ::c_ulong,
+    }
     #[repr(C)]
     #[repr(align(8))]
     pub struct pthread_attr_t {
@@ -97,63 +139,6 @@ s! {
     #[repr(align(4))]
     pub struct pthread_spinlock_t {
         bytes: [u8; _PTHREAD_SPINLOCK_SIZE],
-    }
-}
-
-const _PTHREAD_ATTR_SIZE: usize = 32;
-const _PTHREAD_RWLOCKATTR_SIZE: usize = 1;
-const _PTHREAD_RWLOCK_SIZE: usize = 4;
-const _PTHREAD_BARRIER_SIZE: usize = 24;
-const _PTHREAD_BARRIERATTR_SIZE: usize = 4;
-const _PTHREAD_CONDATTR_SIZE: usize = 8;
-const _PTHREAD_COND_SIZE: usize = 8;
-const _PTHREAD_MUTEX_SIZE: usize = 12;
-const _PTHREAD_MUTEXATTR_SIZE: usize = 20;
-const _PTHREAD_ONCE_SIZE: usize = 4;
-const _PTHREAD_SPINLOCK_SIZE: usize = 4;
-
-#[cfg_attr(feature = "extra_traits", derive(Debug))]
-pub enum timezone {}
-impl ::Copy for timezone {}
-impl ::Clone for timezone {
-    fn clone(&self) -> timezone {
-        *self
-    }
-}
-
-s_no_extra_traits! {
-    #[repr(C)]
-    pub struct utsname {
-        pub sysname: [::c_char; UTSLENGTH],
-        pub nodename: [::c_char; UTSLENGTH],
-        pub release: [::c_char; UTSLENGTH],
-        pub version: [::c_char; UTSLENGTH],
-        pub machine: [::c_char; UTSLENGTH],
-        pub domainname: [::c_char; UTSLENGTH],
-    }
-
-    pub struct dirent {
-        pub d_ino: ::ino_t,
-        pub d_off: ::off_t,
-        pub d_reclen: ::c_ushort,
-        pub d_type: ::c_uchar,
-        pub d_name: [::c_char; 256],
-    }
-
-    pub struct sockaddr_un {
-        pub sun_family: ::sa_family_t,
-        pub sun_path: [::c_char; 108]
-    }
-
-    pub struct sockaddr_storage {
-        pub ss_family: ::sa_family_t,
-        __ss_padding: [
-            u8;
-            128 -
-            ::core::mem::size_of::<sa_family_t>() -
-            ::core::mem::size_of::<c_ulong>()
-        ],
-        __ss_align: ::c_ulong,
     }
 }
 
@@ -320,6 +305,18 @@ s! {
         pub tm_zone: *const ::c_char,
     }
 }
+
+const _PTHREAD_ATTR_SIZE: usize = 32;
+const _PTHREAD_RWLOCKATTR_SIZE: usize = 1;
+const _PTHREAD_RWLOCK_SIZE: usize = 4;
+const _PTHREAD_BARRIER_SIZE: usize = 24;
+const _PTHREAD_BARRIERATTR_SIZE: usize = 4;
+const _PTHREAD_CONDATTR_SIZE: usize = 8;
+const _PTHREAD_COND_SIZE: usize = 8;
+const _PTHREAD_MUTEX_SIZE: usize = 12;
+const _PTHREAD_MUTEXATTR_SIZE: usize = 20;
+const _PTHREAD_ONCE_SIZE: usize = 4;
+const _PTHREAD_SPINLOCK_SIZE: usize = 4;
 
 pub const UTSLENGTH: usize = 65;
 
@@ -599,9 +596,15 @@ pub const POLLWRBAND: ::c_short = 0x200;
 // pthread.h
 pub const PTHREAD_MUTEX_NORMAL: ::c_int = 0;
 pub const PTHREAD_MUTEX_RECURSIVE: ::c_int = 1;
-pub const PTHREAD_MUTEX_INITIALIZER: ::pthread_mutex_t = ::pthread_mutex_t { bytes: [0; _PTHREAD_MUTEX_SIZE] };
-pub const PTHREAD_COND_INITIALIZER: ::pthread_cond_t = ::pthread_cond_t { bytes: [0; _PTHREAD_COND_SIZE] };
-pub const PTHREAD_RWLOCK_INITIALIZER: ::pthread_rwlock_t = ::pthread_rwlock_t { bytes: [0; _PTHREAD_RWLOCK_SIZE] };
+pub const PTHREAD_MUTEX_INITIALIZER: ::pthread_mutex_t = ::pthread_mutex_t {
+    bytes: [0; _PTHREAD_MUTEX_SIZE],
+};
+pub const PTHREAD_COND_INITIALIZER: ::pthread_cond_t = ::pthread_cond_t {
+    bytes: [0; _PTHREAD_COND_SIZE],
+};
+pub const PTHREAD_RWLOCK_INITIALIZER: ::pthread_rwlock_t = ::pthread_rwlock_t {
+    bytes: [0; _PTHREAD_RWLOCK_SIZE],
+};
 pub const PTHREAD_STACK_MIN: ::size_t = 4096;
 
 // signal.h
