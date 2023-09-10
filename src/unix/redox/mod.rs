@@ -45,76 +45,6 @@ pub type pid_t = usize;
 pub type uid_t = u32;
 pub type gid_t = u32;
 
-s! {
-    #[repr(C)]
-    #[repr(align(8))]
-    pub struct pthread_attr_t {
-        bytes: [u8; _PTHREAD_ATTR_SIZE],
-    }
-    #[repr(C)]
-    #[repr(align(4))]
-    pub struct pthread_barrier_t {
-        bytes: [u8; _PTHREAD_BARRIER_SIZE],
-    }
-    #[repr(C)]
-    #[repr(align(4))]
-    pub struct pthread_barrierattr_t {
-        bytes: [u8; _PTHREAD_BARRIERATTR_SIZE],
-    }
-    #[repr(C)]
-    #[repr(align(4))]
-    pub struct pthread_mutex_t {
-        bytes: [u8; _PTHREAD_MUTEX_SIZE],
-    }
-    #[repr(C)]
-    #[repr(align(4))]
-    pub struct pthread_rwlock_t {
-        bytes: [u8; _PTHREAD_RWLOCK_SIZE],
-    }
-    #[repr(C)]
-    #[repr(align(4))]
-    pub struct pthread_mutexattr_t {
-        bytes: [u8; _PTHREAD_MUTEXATTR_SIZE],
-    }
-    #[repr(C)]
-    #[repr(align(1))]
-    pub struct pthread_rwlockattr_t {
-        bytes: [u8; _PTHREAD_RWLOCKATTR_SIZE],
-    }
-    #[repr(C)]
-    #[repr(align(4))]
-    pub struct pthread_cond_t {
-        bytes: [u8; _PTHREAD_COND_SIZE],
-    }
-    #[repr(C)]
-    #[repr(align(4))]
-    pub struct pthread_condattr_t {
-        bytes: [u8; _PTHREAD_CONDATTR_SIZE],
-    }
-    #[repr(C)]
-    #[repr(align(4))]
-    pub struct pthread_once_t {
-        bytes: [u8; _PTHREAD_ONCE_SIZE],
-    }
-    #[repr(C)]
-    #[repr(align(4))]
-    pub struct pthread_spinlock_t {
-        bytes: [u8; _PTHREAD_SPINLOCK_SIZE],
-    }
-}
-
-const _PTHREAD_ATTR_SIZE: usize = 32;
-const _PTHREAD_RWLOCKATTR_SIZE: usize = 1;
-const _PTHREAD_RWLOCK_SIZE: usize = 4;
-const _PTHREAD_BARRIER_SIZE: usize = 24;
-const _PTHREAD_BARRIERATTR_SIZE: usize = 4;
-const _PTHREAD_CONDATTR_SIZE: usize = 8;
-const _PTHREAD_COND_SIZE: usize = 8;
-const _PTHREAD_MUTEX_SIZE: usize = 12;
-const _PTHREAD_MUTEXATTR_SIZE: usize = 20;
-const _PTHREAD_ONCE_SIZE: usize = 4;
-const _PTHREAD_SPINLOCK_SIZE: usize = 4;
-
 #[cfg_attr(feature = "extra_traits", derive(Debug))]
 pub enum timezone {}
 impl ::Copy for timezone {}
@@ -328,9 +258,76 @@ s! {
         pub uid: uid_t,
         pub gid: gid_t,
     }
+    #[repr(C)]
+    #[repr(align(8))]
+    pub struct pthread_attr_t {
+        bytes: [u8; _PTHREAD_ATTR_SIZE],
+    }
+    #[repr(C)]
+    #[repr(align(4))]
+    pub struct pthread_barrier_t {
+        bytes: [u8; _PTHREAD_BARRIER_SIZE],
+    }
+    #[repr(C)]
+    #[repr(align(4))]
+    pub struct pthread_barrierattr_t {
+        bytes: [u8; _PTHREAD_BARRIERATTR_SIZE],
+    }
+    #[repr(C)]
+    #[repr(align(4))]
+    pub struct pthread_mutex_t {
+        bytes: [u8; _PTHREAD_MUTEX_SIZE],
+    }
+    #[repr(C)]
+    #[repr(align(4))]
+    pub struct pthread_rwlock_t {
+        bytes: [u8; _PTHREAD_RWLOCK_SIZE],
+    }
+    #[repr(C)]
+    #[repr(align(4))]
+    pub struct pthread_mutexattr_t {
+        bytes: [u8; _PTHREAD_MUTEXATTR_SIZE],
+    }
+    #[repr(C)]
+    #[repr(align(1))]
+    pub struct pthread_rwlockattr_t {
+        bytes: [u8; _PTHREAD_RWLOCKATTR_SIZE],
+    }
+    #[repr(C)]
+    #[repr(align(4))]
+    pub struct pthread_cond_t {
+        bytes: [u8; _PTHREAD_COND_SIZE],
+    }
+    #[repr(C)]
+    #[repr(align(4))]
+    pub struct pthread_condattr_t {
+        bytes: [u8; _PTHREAD_CONDATTR_SIZE],
+    }
+    #[repr(C)]
+    #[repr(align(4))]
+    pub struct pthread_once_t {
+        bytes: [u8; _PTHREAD_ONCE_SIZE],
+    }
+    #[repr(C)]
+    #[repr(align(4))]
+    pub struct pthread_spinlock_t {
+        bytes: [u8; _PTHREAD_SPINLOCK_SIZE],
+    }
 }
 
 pub const UTSLENGTH: usize = 65;
+const _PTHREAD_ATTR_SIZE: usize = 32;
+const _PTHREAD_RWLOCKATTR_SIZE: usize = 1;
+const _PTHREAD_RWLOCK_SIZE: usize = 4;
+const _PTHREAD_BARRIER_SIZE: usize = 24;
+const _PTHREAD_BARRIERATTR_SIZE: usize = 4;
+const _PTHREAD_CONDATTR_SIZE: usize = 8;
+const _PTHREAD_COND_SIZE: usize = 8;
+const _PTHREAD_MUTEX_SIZE: usize = 12;
+const _PTHREAD_MUTEXATTR_SIZE: usize = 20;
+const _PTHREAD_ONCE_SIZE: usize = 4;
+const _PTHREAD_SPINLOCK_SIZE: usize = 4;
+
 
 // intentionally not public, only used for fd_set
 cfg_if! {
